@@ -22,12 +22,12 @@ namespace ProAgil.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAction()
+        public async Task<IActionResult> Get()
         {
             try    
             {
                 var results = await _repositorio.GetAllEventoAsync(true);
-                return Ok(results);
+                return BadRequest(results);
             }
             catch(System.Exception ex)
             {
@@ -38,7 +38,7 @@ namespace ProAgil.WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAction(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try    
             {
@@ -119,7 +119,7 @@ namespace ProAgil.WebAPI.Controllers
                 if(evento == null) return NotFound();
 
                 _repositorio.Delete(evento);
-                
+
                 if(await _repositorio.SaveChangesAsync())
                     return Ok();
                 
