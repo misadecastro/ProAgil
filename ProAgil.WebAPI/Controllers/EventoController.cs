@@ -23,7 +23,7 @@ namespace ProAgil.WebAPI.Controllers
             try    
             {
                 var results = await _repositorio.GetAllEventoAsync(true);
-                return BadRequest(results);
+                return Ok(results);
             }
             catch(System.Exception ex)
             {
