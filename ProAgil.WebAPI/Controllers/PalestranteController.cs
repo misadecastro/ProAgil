@@ -8,11 +8,11 @@ namespace ProAgil.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EventoController : ControllerBase
+    public class PalestranteController : ControllerBase
     {
         public readonly IProAgilRepository _repositorio;
 
-        public EventoController(IProAgilRepository repositorio)
+        public PalestranteController(IProAgilRepository repositorio)
         {
             this._repositorio = repositorio;
         }
@@ -22,7 +22,7 @@ namespace ProAgil.WebAPI.Controllers
         {
             try    
             {
-                var results = await _repositorio.GetAllEventoAsync(true);
+                var results = await _repositorio.GetAllPalestranteAsync(true);
                 return BadRequest(results);
             }
             catch(System.Exception ex)
@@ -38,33 +38,35 @@ namespace ProAgil.WebAPI.Controllers
         {
             try    
             {
-                var results = await _repositorio.GetEventoAsyncById(id, true);
-                return Ok(results);
+                var results = await _repositorio.GetPalestranteAsyncById(id, true);
+                return BadRequest(results);
             }
             catch(System.Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
 
             }
+            
         }
 
-        [HttpGet("getByTema{tema}")]
-        public async Task<IActionResult> GetAction(string tema)
+        [HttpGet("getByNome{nome}")]
+        public async Task<IActionResult> Get(string nome)
         {
             try    
             {
-                var results = await _repositorio.GetAllEventoAsyncByTema(tema, true);
-                return Ok(results);
+                var results = await _repositorio.GetAllPalestranteAsyncByNome(nome, true);
+                return BadRequest(results);
             }
             catch(System.Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
 
             }
+            
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Evento model)
+        public async Task<IActionResult> Post(Palestrante model)
         {
             try    
             {
@@ -83,18 +85,18 @@ namespace ProAgil.WebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(int eventoId, Evento model)
+        public async Task<IActionResult> Put(int palestranteId, Palestrante model)
         {
             try    
             {
-                var evento = await _repositorio.GetEventoAsyncById(eventoId, false);
+                var palestrante = await _repositorio.GetPalestranteAsyncById(palestranteId, false);
 
-                if(evento == null) return NotFound();
+                if(palestrante == null) return NotFound();
 
                 _repositorio.UpDate(model);
                 if(await _repositorio.SaveChangesAsync())
                 {
-                    return Created($"/api/evento/{model.Id}",model);
+                    return Created($"/api/Palestrante/{model.Id}",model);
                 }
                 return BadRequest();
             }
@@ -106,15 +108,15 @@ namespace ProAgil.WebAPI.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int eventoId)
+        public async Task<IActionResult> Delete(int palestranteId)
         {
             try    
             {
-                var evento = await _repositorio.GetEventoAsyncById(eventoId, false);
+                var palestrante = await _repositorio.GetPalestranteAsyncById(palestranteId, false);
 
-                if(evento == null) return NotFound();
+                if(palestrante == null) return NotFound();
 
-                _repositorio.Delete(evento);
+                _repositorio.Delete(palestrante);
 
                 if(await _repositorio.SaveChangesAsync())
                     return Ok();
