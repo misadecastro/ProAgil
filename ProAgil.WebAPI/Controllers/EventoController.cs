@@ -82,12 +82,12 @@ namespace ProAgil.WebAPI.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put(int eventoId, Evento model)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, Evento model)
         {
             try    
             {
-                var evento = await _repositorio.GetEventoAsyncById(eventoId, false);
+                var evento = await _repositorio.GetEventoAsyncById(id, false);
 
                 if(evento == null) return NotFound();
 
@@ -105,12 +105,12 @@ namespace ProAgil.WebAPI.Controllers
             }
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int eventoId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             try    
             {
-                var evento = await _repositorio.GetEventoAsyncById(eventoId, false);
+                var evento = await _repositorio.GetEventoAsyncById(id, false);
 
                 if(evento == null) return NotFound();
 
