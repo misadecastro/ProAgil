@@ -5,6 +5,8 @@ import { Evento } from '../_models/Evento';
 import { EventoService } from '../_services/evento.service';
 import {defineLocale} from 'ngx-bootstrap/chronos';
 import {BsLocaleService} from 'ngx-bootstrap/datepicker';
+import { ToastrService } from 'ngx-toastr';
+
 import {ptBrLocale} from 'ngx-bootstrap/locale';
 import { templateJitUrl } from '@angular/compiler';
 defineLocale('pt-br', ptBrLocale);
@@ -25,14 +27,15 @@ export class EventosComponent implements OnInit {
   mostrarImagem = false;
   modalRef: BsModalRef;
   registerForm: FormGroup;
-
+  titulo = 'Eventos';
   _filtroLista = '';
 
   constructor(
     private eventoService: EventoService,
     private modalService: BsModalService,
     private fb: FormBuilder,
-    private localeService: BsLocaleService
+    private localeService: BsLocaleService,
+    private toastr: ToastrService
     ) {
       this.localeService.use('pt-br');
     }
@@ -107,7 +110,9 @@ export class EventosComponent implements OnInit {
       () => {
           template.hide();
           this.getEventos();
+          this.toastr.success('Registro deletado com sucesso!');
         }, error => {
+          this.toastr.error(`Erro ao deletar registro: ${error}`);
           console.log(error);
         }
     );
@@ -123,7 +128,9 @@ export class EventosComponent implements OnInit {
             console.log(novoEvento);
             template.hide();
             this.getEventos();
+            this.toastr.success('Registro inserido com sucesso!');
           }, error => {
+            this.toastr.error(`Erro ao inserir registro: ${error}`);
             console.log(error);
           }
         );
@@ -136,7 +143,9 @@ export class EventosComponent implements OnInit {
             console.log(novoEvento);
             template.hide();
             this.getEventos();
+            this.toastr.success('Registro editado com sucesso!');
           }, error => {
+            this.toastr.error(`Erro ao editar registro: ${error}`);
             console.log(error);
           }
         );
@@ -152,6 +161,7 @@ export class EventosComponent implements OnInit {
         console.log(_eventos);
       },
       error => {
+        this.toastr.error(`Erro ao carregar os registros: ${error}`);
         console.log(error);
       }
     );

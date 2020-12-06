@@ -1,3 +1,4 @@
+<app-titulo [titulo]="titulo"></app-titulo>
 <div class="d-flex">
   <div class="form-inline mr-auto">
     <div class="form-group mb-2">
@@ -41,7 +42,7 @@
     <td></td>
     <td>{{evento.tema}}</td>
     <td>{{evento.local}}</td>
-    <td>{{evento.dataEvento | DateTimeFormatPipe}}</td>
+    <td>{{evento.dataEvento}}</td>
     <td>{{evento.qtdPessoas}}</td>
     <td>        
       <div *ngIf="!evento.lotes.length">
