@@ -23,6 +23,13 @@ export class EventoService {
     return this.http.get<Evento[]>(`${this.baseURL}/getByTema/${tema}`);
   }
 
+  postUpload(file: File, name: string): any {
+    const fileToUpload = file[0] as File;
+    const formData = new FormData();
+    formData.append('file', fileToUpload, name);
+    return this.http.post(`${this.baseURL}upload`, formData);
+  }
+
   postEvento(evento: Evento): Observable<Evento>{
     let str = JSON.stringify(evento , function(k, v): any{
         if (k === 'qtdPessoas'){

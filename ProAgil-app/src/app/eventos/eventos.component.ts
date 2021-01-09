@@ -28,6 +28,7 @@ export class EventosComponent implements OnInit {
   modalRef: BsModalRef;
   registerForm: FormGroup;
   titulo = 'Eventos';
+  file: File;
   _filtroLista = '';
 
   constructor(
@@ -53,6 +54,7 @@ export class EventosComponent implements OnInit {
     this.eventoService.getEventoById(idEvento).subscribe(
       (_evento: Evento) => {
         this.openModal(template);
+        _evento.imagemURL = '';
         this.registerForm.patchValue(_evento);
         this.evento = _evento;
       }, error => {
@@ -62,7 +64,7 @@ export class EventosComponent implements OnInit {
   }
 
   novoEvento(template: any): void{
-    this.modoSalvar = 'pos';
+    this.modoSalvar = 'post';
     this.openModal(template);
   }
 
@@ -118,11 +120,19 @@ export class EventosComponent implements OnInit {
     );
   }
 
+  upLoadImage(){    
+    const nomeArquivo = this.evento.imagemURL.split('\\', 3);
+    this.evento.imagemURL = nomeArquivo[2];
+
+    this.eventoService.postUpload(this.file, nomeArquivo[2]).subscribe();
+  }
+
   salvarAlteracao(template: any): void{
     if (this.registerForm.valid){
       if (this.modoSalvar === 'post'){
         this.evento = Object.assign({}, this.registerForm.value);
-        console.log(this.evento);
+        this.upLoadImage();
+
         this.eventoService.postEvento(this.evento).subscribe(
           (novoEvento: Evento) => {
             console.log(novoEvento);
@@ -137,7 +147,8 @@ export class EventosComponent implements OnInit {
       }
       else{
         this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
-        console.log(this.evento);
+        this.upLoadImage();
+
         this.eventoService.putEvento(this.evento, this.evento.id).subscribe(
           (novoEvento: Evento) => {
             console.log(novoEvento);
@@ -150,6 +161,14 @@ export class EventosComponent implements OnInit {
           }
         );
       }
+    }
+  }
+
+  onFileChange(event): void{
+    const reader = new FileReader();
+    if (event.target.files && event.target.files.length){
+      this.file = event.target.files;
+      console.log(this.file);
     }
   }
 
