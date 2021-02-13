@@ -38,7 +38,7 @@ export class EventoService {
         return v;
     });
     let ev = JSON.parse(str);
-    return this.http.post<Evento>(this.baseURL, ev, {headers: this.tokenHeader});
+    return this.http.post<Evento>(this.baseURL, ev);
   }
 
   putEvento(evento: Evento, id: number): Observable<Evento>{
@@ -49,11 +49,11 @@ export class EventoService {
         return v;
     });
     let ev = JSON.parse(str);
-    return this.http.put<Evento>(`${this.baseURL}${id}`, ev, {headers: this.tokenHeader});
+    return this.http.put<Evento>(`${this.baseURL}${id}`, ev);
   }
 
   deleteEvento(id: number): Observable<any>{
-    return this.http.delete(`${this.baseURL}${id}`, {headers: this.tokenHeader});
+    return this.http.delete(`${this.baseURL}${id}`);
   }
 
 }
