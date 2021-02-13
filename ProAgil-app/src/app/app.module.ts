@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule  } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -19,12 +19,16 @@ import { PalestrantesComponent } from './palestrantes/palestrantes.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ContatosComponent } from './contatos/contatos.component';
 import { TituloComponent } from './_shared/titulo/titulo.component';
+import { LoginComponent } from './user/login/login.component';
+import { RegistrationComponent } from './user/registration/registration.component';
+import { UserComponent } from './user/user.component';
 
 import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
       EventosComponent,
       NavComponent,
@@ -32,7 +36,10 @@ import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
       PalestrantesComponent,
       DashboardComponent,
       ContatosComponent,
-      TituloComponent
+      TituloComponent,
+      RegistrationComponent,
+      LoginComponent,
+      UserComponent
    ],
   imports: [
     BrowserModule,
@@ -48,7 +55,12 @@ import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
     ReactiveFormsModule
   ],
   providers: [
-    EventoService
+    EventoService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

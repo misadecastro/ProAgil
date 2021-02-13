@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Evento } from '../_models/Evento';
@@ -38,7 +38,7 @@ export class EventoService {
         return v;
     });
     let ev = JSON.parse(str);
-    return this.http.post<Evento>(this.baseURL, ev);
+    return this.http.post<Evento>(this.baseURL, ev, {headers: this.tokenHeader});
   }
 
   putEvento(evento: Evento, id: number): Observable<Evento>{
@@ -49,11 +49,11 @@ export class EventoService {
         return v;
     });
     let ev = JSON.parse(str);
-    return this.http.put<Evento>(`${this.baseURL}${id}`, ev);
+    return this.http.put<Evento>(`${this.baseURL}${id}`, ev, {headers: this.tokenHeader});
   }
 
   deleteEvento(id: number): Observable<any>{
-    return this.http.delete(`${this.baseURL}${id}`);
+    return this.http.delete(`${this.baseURL}${id}`, {headers: this.tokenHeader});
   }
 
 }
