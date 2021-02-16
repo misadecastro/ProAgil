@@ -23,6 +23,11 @@ namespace ProAgil.Repository
             _context.Update(entity);
         }
 
+        public void DeleteRange<T>(T[] entityArray) where T : class
+        {
+            _context.RemoveRange(entityArray);
+        }
+
         public void Delete<T>(T entity) where T : class
         {
             _context.Remove(entity);
